@@ -19,12 +19,12 @@ module.exports = {
       },
       createdAt: {
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
         allowNull: true
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: null,
+        defaultValue: Sequelize.NOW,
         allowNull: true
       }
     });

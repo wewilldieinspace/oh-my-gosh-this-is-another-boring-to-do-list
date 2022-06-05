@@ -8,24 +8,24 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user: {
+      user_id: {
         type: Sequelize.INTEGER,
-        model: 'Users',
-        key: 'id',
-        allowNull: false,
+        allowNull: false
       },
-      refreshKey: {
+      refresh_key: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
       createdAt: {
+        allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
+        defaultValue: Sequelize.NOW,
         allowNull: true
       },
       updatedAt: {
+        allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: null,
+        defaultValue: Sequelize.NOW,
         allowNull: true
       }
     });

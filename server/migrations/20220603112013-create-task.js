@@ -28,20 +28,22 @@ module.exports = {
       start_date: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: new Date()
+        defaultValue: Sequelize.NOW
       },
       finish_date: {
         type: Sequelize.DATE,
         allowNull: false,
         validate: {
-          isAfter: new Date(),
+          isAfter: Sequelize.NOW
         }
       },
-      user: {
+      user_id: {
         type: Sequelize.INTEGER,
-        model: 'Users',
-        key: 'id',
         allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -50,7 +52,7 @@ module.exports = {
       },
       updatedAt: {
         type: Sequelize.DATE,
-        defaultValue: null,
+        defaultValue: Sequelize.NOW,
         allowNull: true
       }
     });
