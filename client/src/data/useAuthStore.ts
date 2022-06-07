@@ -10,7 +10,7 @@ export const useAuthStore = create((set: any, get: any) => ({
   user: null,
   isAuth: false,
   tasks: [],
-  isLoaded: false,
+  isLoaded: true,
   error: null,
 
   registration: async (username: string, password: string) => {
