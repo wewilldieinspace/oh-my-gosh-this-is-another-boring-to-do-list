@@ -1,10 +1,11 @@
+// REACT
 import React from 'react';
 import { render } from 'react-dom';
+// COMPONENTS
+// import { App } from './App';
 import { App } from './App';
 
 render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.querySelector('#root')
+  <App />,
+  document.querySelector('#root'),
 );

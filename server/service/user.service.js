@@ -5,7 +5,7 @@ const UserDto = require('../dto/use.dto')
 const { User } = require('../models')
 
 class UserService {
-    async register(username, password) {
+    async registration(username, password) {
         const candidate = await User.findOne({ where: { name: username }})
 
         if (candidate) {
@@ -50,7 +50,7 @@ class UserService {
 
     async refresh(refreshToken) {
         if (!refreshToken) {
-            throw console.log('server error');
+            throw console.log('server error');  
         }
 
         const userData = tokenService.validateRefreshToken(refreshToken);

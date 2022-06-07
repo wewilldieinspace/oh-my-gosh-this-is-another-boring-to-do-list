@@ -4,10 +4,10 @@ const router = new Router();
 const {body} = require('express-validator');
 
 
-router.post('/register', 
+router.post('/registration', 
     body('username').isLength({ min: 1 }),
     body('password').isLength({ min: 3 }),
-    userController.register
+    userController.registration
 );
 router.post('/login', userController.login);
 router.post('/logout', userController.logout);

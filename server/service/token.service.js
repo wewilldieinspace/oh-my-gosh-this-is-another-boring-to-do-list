@@ -4,7 +4,7 @@ const { Token } = require('../models')
 class TokenService {
     generateTokens(payload) {
         const accessToken = jwt.sign(payload, process.env.JWT_ACCESS, {expiresIn: '15s'})
-        const refreshToken = jwt.sign(payload, process.env.JWT_ACCESS, {expiresIn: '30s'})
+        const refreshToken = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '30s'})
         return {
             accessToken,
             refreshToken
@@ -22,7 +22,7 @@ class TokenService {
 
     validateRefreshToken(token) {
         try {
-            const userData = jwt.verify(token, process.env.JWT_ACCESS);
+            const userData = jwt.verify(token, process.env.JWT_SECRET);
             return userData;
         } catch (e) {
             return null;
@@ -45,9 +45,9 @@ class TokenService {
         return tokenData;
     }
 
-    async findToken(refreshToken) {
-        const tokenData = await Token.findOne({ where: { refresh_key: refreshToken }})
-        return tokenData;
+    async findToken(token) {
+        const tokenData = await Token.findOne({ where: { refresh_key: token }})
+        return tokenData.dataValues;
     }
 }
 
