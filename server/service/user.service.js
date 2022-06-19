@@ -1,73 +1,83 @@
-const bcrypt = require('bcrypt')
-const uuid = require('uuid')
-const tokenService = require('./token.service')
-const UserDto = require('../dto/use.dto')
-const { User } = require('../models')
+const bcrypt = require('bcrypt');
+// const uuid = require('uuid');
+const tokenService = require('./token.service');
+const UserDto = require('../dto/use.dto');
+const { User } = require('../sequelize/models');
 
 class UserService {
-    async registration(username, password) {
-        const candidate = await User.findOne({ where: { name: username }})
+  static async registration(username, password) {
+    const candidate = await User.findOne({ where: { name: username } });
 
-        if (candidate) {
-            throw console.log(`User already exists!!!!`)
-        }
-
-        const hashPassword = await bcrypt.hash(password, 3);
-        const user = await User.create({ name: username, password: hashPassword })
-        const userDto = new UserDto(user.dataValues); 
-        const tokens = tokenService.generateTokens({ ...userDto });
-
-        await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
-        return {...tokens, user: userDto}
+    if (candidate) {
+      throw console.log('User already exists!!!!');
     }
 
-    async login(username, password) {
-        const user = await User.findOne({ where: { name: username }})
+    const hashPassword = await bcrypt.hash(password, 3);
+    const user = await User.create({ name: username, password: hashPassword });
 
-        if (!user) {
-            throw console.log('User not found')
-        }
+    const userDto = new UserDto(user.dataValues);
+    const tokens = tokenService.generateTokens({ ...userDto });
 
-        const isPasswordActive = await bcrypt.compare(password, user.dataValues.password);
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
-        if (!isPasswordActive) {
-            throw console.log('Incorrect password');
-        }
+    return { ...tokens, user: userDto };
+  }
 
-        const userDto = new UserDto(user.dataValues);
-        const tokens = tokenService.generateTokens({ ...userDto });
+  static async login(username, password) {
+    const user = await User.findOne({ where: { name: username } });
 
-        await tokenService.saveToken(userDto.id, tokens.refreshToken);
-        
-        return {...tokens, user: userDto}
+    if (!user) {
+      throw console.log('User not found');
     }
 
-    async logout(refreshToken) {
-        const token = await tokenService.removeToken(refreshToken);
-        return token;
+    const isPasswordActive = await bcrypt.compare(password, user.dataValues.password);
+
+    if (!isPasswordActive) {
+      throw console.log('Incorrect password');
     }
 
-    async refresh(refreshToken) {
-        if (!refreshToken) {
-            throw console.log('server error');  
-        }
+    const userDto = new UserDto(user.dataValues);
+    const tokens = tokenService.generateTokens({ ...userDto });
 
-        const userData = tokenService.validateRefreshToken(refreshToken);
-        const tokenFromDb = await tokenService.findToken(refreshToken);
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
-        if (!userData || !tokenFromDb) {
-            throw console.log('server error');
-        }
+    return { ...tokens, user: userDto };
+  }
 
-        const user = await User.findByPk(userData.id);
-        const userDto = new UserDto(user.dataValues);
-        const tokens = tokenService.generateTokens({ ...userDto });
+  static async logout(refreshToken) {
+    const token = await tokenService.removeToken(refreshToken);
+    return token;
+  }
 
-        await tokenService.saveToken(userDto.id, tokens.refreshToken);
-
-        return {...tokens, user: userDto}
+  static getUser(refreshToken) {
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    if (!userData) {
+      return null;
     }
+
+    return userData;
+  }
+
+  static async refresh(refreshToken) {
+    if (!refreshToken) {
+      throw console.log('server error');
+    }
+
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDb = await tokenService.findToken(refreshToken);
+
+    if (!userData || !tokenFromDb) {
+      return null;
+    }
+
+    const user = await User.findByPk(userData.id);
+    const userDto = new UserDto(user.dataValues);
+    const tokens = tokenService.generateTokens({ ...userDto });
+
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+
+    return { ...tokens, user: userDto };
+  }
 }
 
-module.exports = new UserService()
+module.exports = UserService;

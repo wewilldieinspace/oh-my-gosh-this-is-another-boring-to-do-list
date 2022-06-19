@@ -1,18 +1,18 @@
-'use strict';
 const {
   Model,
-  Sequelize
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     static associate(models) {
-      this.belongsTo(models.User)
-      models.User.hasMany(this)
+      Task.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+      });
     }
   }
   Task.init({
-    task_id: {
+    taskId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: true,
@@ -28,27 +28,19 @@ module.exports = (sequelize, DataTypes) => {
     status: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
       validate: {
-        min: 0,
-        max: 1
+        isIn: [[0, 1, 2, 3]],
       },
     },
-    start_date: {
+    finishDate: {
       type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.fn('now')
+      defaultValue: null,
     },
-    finish_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: {
-        isAfter: Sequelize.fn('now'),
-      }
-    },
-    user_id: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    }
+    },
   }, {
     sequelize,
     modelName: 'Task',

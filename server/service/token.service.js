@@ -1,54 +1,56 @@
 const jwt = require('jsonwebtoken');
-const { Token } = require('../models')
+const { Token } = require('../sequelize/models');
 
 class TokenService {
-    generateTokens(payload) {
-        const accessToken = jwt.sign(payload, process.env.JWT_ACCESS, {expiresIn: '15s'})
-        const refreshToken = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: '30s'})
-        return {
-            accessToken,
-            refreshToken
-        }
+  static generateTokens(payload) {
+    const accessToken = jwt.sign(payload, process.env.JWT_ACCESS, { expiresIn: '15s' });
+    const refreshToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30s' });
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  static validateAccessToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_ACCESS);
+      return userData;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static validateRefreshToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_SECRET);
+      return userData;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static async saveToken(userId, refreshToken) {
+    const [tokenData, created] = await Token.findOrCreate({
+      where: { userId }, defaults: { userId, refreshToken },
+    });
+
+    if (!created) {
+      tokenData.refreshToken = refreshToken;
+      tokenData.save();
     }
 
-    validateAccessToken(token) {
-        try {
-            const userData = jwt.verify(token, process.env.JWT_ACCESS);
-            return userData;
-        } catch (e) {
-            return null;
-        }
-    }
+    return tokenData.dataValues;
+  }
 
-    validateRefreshToken(token) {
-        try {
-            const userData = jwt.verify(token, process.env.JWT_SECRET);
-            return userData;
-        } catch (e) {
-            return null;
-        }
-    }
+  static async removeToken(refreshToken) {
+    const tokenData = await Token.destroy({ where: { refreshToken } });
+    return tokenData;
+  }
 
-    async saveToken(userId, refreshToken) {
-        const tokenData = await Token.findOne({ where: { user_id: userId }})
-        
-        if (tokenData) {
-            tokenData.refresh_key = refreshToken;
-            return tokenData.save();
-        }
-        const token = await Token.create({ user_id: userId, refresh_key: refreshToken })
-        return token;
-    }
-
-    async removeToken(refreshToken) {
-        const tokenData = await Token.destroy({ where: { refresh_key: refreshToken }})
-        return tokenData;
-    }
-
-    async findToken(token) {
-        const tokenData = await Token.findOne({ where: { refresh_key: token }})
-        return tokenData.dataValues;
-    }
+  static async findToken(refreshToken) {
+    const tokenData = await Token.findOne({ where: { refreshToken } });
+    return tokenData.dataValues;
+  }
 }
 
-module.exports = new TokenService();
+module.exports = TokenService;

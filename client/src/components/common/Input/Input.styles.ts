@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 
+enum ImagesList {
+    CLOSE = '/assets/close_eye.png',
+    OPEN = '/assets/open_eye.png'
+  }
+
+export const Container = styled.div`
+  position: relative
+`;
+
 export const Input = styled.input`
     display: inline-block;
 
@@ -16,18 +25,22 @@ export const Input = styled.input`
     border-radius: 5px;
 `;
 
-export const TogglePasswordVisibilityButton = styled.span`
-    position: absolute;
+export const TogglePasswordVisibilityButton = styled.span<{isPasswordHidden: boolean}>`
     display: inline-block;
-
-    right: 2em;
-
-    width: 20px;
-    height: 20px;
-
-    background-image: url("/assets/close_eye.png");
+    position: absolute;
+  
+    top: .5em;
+    right: .5em;
+    bottom: .5em;
+  
+    width: 30px;
+  
+    padding: .7em;
+  
+    background-image: url("${({ isPasswordHidden }) => (isPasswordHidden ? ImagesList.CLOSE : ImagesList.OPEN)}");
     background-repeat: no-repeat;
     background-size: cover;
-
+    background-origin: content-box;
+  
     cursor: pointer;
-`;
+  `;

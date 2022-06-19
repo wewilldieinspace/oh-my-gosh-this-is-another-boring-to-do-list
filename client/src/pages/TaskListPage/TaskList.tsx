@@ -1,14 +1,27 @@
 // ZUSTAND
-import { useAuthStore } from '../../data';
+import { useEffect } from 'react';
+import { useAuthStore, useTaskStore } from '../../data';
 // COMPONENTS
 import { Container } from './TaskList.styles';
+import { TaskContainer } from '../../components';
 
 export const TaskListPage = () => {
   const { logout } = useAuthStore((store) => store);
+  const {
+    todoList, unfinishedList,
+    doneList, getTodoList,
+    getUnfinishedTasks, getDoneTaskList,
+  } = useTaskStore((store) => store);
+
+  useEffect(() => {
+    getTodoList();
+    getUnfinishedTasks();
+    getDoneTaskList();
+  }, []);
+
   return (
-    <>
-      <Container>Task list page</Container>
-      <button type="button" onClick={logout}>logout</button>
-    </>
+    <Container>
+      <TaskContainer title="to do, to do" items={todoList} />
+    </Container>
   );
 };

@@ -1,16 +1,30 @@
-const Router = require('express').Router;
-const userController = require('../controllers/user.controller');
+const { Router } = require('express');
+const { body } = require('express-validator');
+const UserController = require('../controllers/user.controller');
+const TaskController = require('../controllers/task.controller');
+
 const router = new Router();
-const {body} = require('express-validator');
 
-
-router.post('/registration', 
-    body('username').isLength({ min: 1 }),
-    body('password').isLength({ min: 3 }),
-    userController.registration
+router.post(
+  '/registration',
+  body('username').isLength({ min: 1 }),
+  body('password').isLength({ min: 3 }),
+  UserController.registration,
 );
-router.post('/login', userController.login);
-router.post('/logout', userController.logout);
-router.get('/refresh', userController.refresh);
+router.post('/login', UserController.login);
+router.post('/logout', UserController.logout);
+router.get('/refresh', UserController.refresh);
+router.post(
+  '/create_task',
+  body('body').isLength({ min: 10, max: 500 }),
+  TaskController.create,
+);
+router.post(
+  '/edit_task',
+  body('body').isLength({ min: 10, max: 500 }),
+  TaskController.edit,
+);
+router.post('/change_status', TaskController.change_status);
+router.post('/delete_task', TaskController.delete);
 
-module.exports = router
+module.exports = router;

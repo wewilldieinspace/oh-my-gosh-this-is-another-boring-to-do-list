@@ -1,21 +1,25 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Token extends Model {
     static associate(models) {
+      Token.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+      });
     }
   }
   Token.init({
-    user_id: {
+    refreshToken: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    refresh_key: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    }
   }, {
     sequelize,
     modelName: 'Token',

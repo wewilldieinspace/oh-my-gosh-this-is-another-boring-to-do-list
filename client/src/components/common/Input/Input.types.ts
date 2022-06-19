@@ -1,41 +1,15 @@
-import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import { DetailedHTMLProps, HTMLAttributes, HTMLInputTypeAttribute } from 'react';
 
-enum InputTypesList {
-  'text',
-  'button',
-  'checkbox',
-  'color',
-  'date',
-  'datetime',
-  'datetime-local',
-  'email',
-  'file',
-  'hidden',
-  'image',
-  'month',
-  'number',
-  'password',
-  'radio',
-  'range',
-  'reset',
-  'search',
-  'submit',
-  'tel',
-  'time',
-  'url',
-  'week'
-}
-
-type InputType = keyof typeof InputTypesList;
+type InputElement = HTMLInputElement | HTMLDivElement
 
 export interface InputProps
   extends DetailedHTMLProps<
-    HTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
+    HTMLAttributes<InputElement>,
+    InputElement
   > {
       value: string,
       placeholder: string,
-      type: InputType,
+      type?: HTMLInputTypeAttribute,
       onChangeHandler: (value: string) => void
 
   }

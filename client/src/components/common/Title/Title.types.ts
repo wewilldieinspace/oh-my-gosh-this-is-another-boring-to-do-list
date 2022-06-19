@@ -5,4 +5,5 @@ export interface TitleProps extends DetailedHTMLProps<
     HTMLTitleElement
   >{
     size?: string;
+    tag?: string
   }

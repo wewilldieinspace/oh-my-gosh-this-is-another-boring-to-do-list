@@ -5,7 +5,8 @@ export interface TextProps
     HTMLAttributes<HTMLParagraphElement>,
     HTMLParagraphElement
   > {
-  color?: string;
-  size?: string;
-  alignCenter?: boolean;
+  color?: string,
+  size?: string,
+  alignCenter?: boolean,
+  span?: boolean,
 }

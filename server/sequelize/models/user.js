@@ -1,11 +1,16 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
+      User.hasOne(models.Token, {
+        foreignKey: 'userId',
+      });
+      User.hasMany(models.Task, {
+        foreignKey: 'userId',
+      });
     }
   }
   User.init({
@@ -17,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
   }, {
     sequelize,
     modelName: 'User',
