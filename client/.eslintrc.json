@@ -57,6 +57,7 @@
         "@typescript-eslint/no-shadow": ["error"],
         "no-param-reassign": 0,
         "no-underscore-dangle":  ["error", { "allow": ["_isRetry"] }],
-        "camelcase": "off"
+        "camelcase": "off",
+        "react/jsx-props-no-spreading": "off"
     }
 }

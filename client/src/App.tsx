@@ -10,10 +10,13 @@ import { GlobalStyle } from './styles/global.styles';
 // COMPONENTS
 import { Container } from './styles/App.styles';
 import { Loader } from './components';
+// HOOKS
+import { useDeviceInfo } from './hooks';
 
 export const App = () => {
   const { checkAuth, isAuth, isLoaded } = useAuthStore((store) => store);
-  const routes = useRoutes(isAuth);
+  const { deviceInfo } = useDeviceInfo();
+  const routes = useRoutes(false, deviceInfo);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -24,7 +27,8 @@ export const App = () => {
     <Container>
       <Router>
         <GlobalStyle />
-        { isLoaded ? routes : <Loader /> }
+        {routes}
+        {/* { isLoaded ? routes : <Loader /> } */}
       </Router>
     </Container>
   );

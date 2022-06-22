@@ -6,6 +6,11 @@ const TaskController = require('../controllers/task.controller');
 const router = new Router();
 
 router.post(
+  '/check_username',
+  body('username').isLength({ min: 1 }),
+  UserController.checkTheUser,
+);
+router.post(
   '/registration',
   body('username').isLength({ min: 1 }),
   body('password').isLength({ min: 3 }),

@@ -1,39 +1,75 @@
-import React, { useState, ChangeEvent } from 'react';
-// COMPONENTS
-import { Input as InputElement, Container, TogglePasswordVisibilityButton } from './Input.styles';
+// REACT
+import React, { useState } from 'react';
+// MUI
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 // TYPES
 import type { InputProps } from './Input.types';
 
 export const Input = ({
-  value, placeholder, type = 'text', onChangeHandler, style,
-}: InputProps) => {
-  const [isPasswordHidden, setPasswordHidden] = useState<boolean>(true);
-
+  input,
+  className,
+  label,
+  variant,
+  required = false,
+  error = false,
+  inputProps,
+  helperText = '',
+  color = 'primary',
+  disabled = false,
+}: any) => {
+  const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
+  const { type } = input;
   if (type === 'password') {
     return (
-      <Container>
-        <InputElement
-          style={{ paddingRight: 40 }}
-          type={isPasswordHidden ? 'password' : 'text'}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeHandler(e.target.value)}
-          value={value}
-          placeholder={placeholder}
-        />
-        <TogglePasswordVisibilityButton
-          isPasswordHidden={isPasswordHidden}
-          onClick={() => setPasswordHidden(!isPasswordHidden)}
-        />
-      </Container>
+      <TextField
+        {...input}
+        type={isPasswordVisible ? 'text' : 'password'}
+        className={className}
+        label={label}
+        variant={variant}
+        required={required}
+        error={error}
+        helperText={error || helperText}
+        color={color}
+        disabled={disabled}
+        FormHelperTextProps={{
+          sx: { margin: 0, textAlign: 'center' },
+        }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setPasswordVisible(!isPasswordVisible)}
+              >
+                {isPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
     );
   }
 
   return (
-    <InputElement
-      style={{ ...style }}
-      placeholder={placeholder}
-      value={value}
-      type={type}
-      onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeHandler(e.target.value)}
+    <TextField
+      {...input}
+      className={className}
+      label={label}
+      error={error}
+      helperText={helperText}
+      variant={variant}
+      required={required}
+      inputProps={inputProps}
+      color={color}
+      disabled={disabled}
+      FormHelperTextProps={{
+        sx: { margin: 0, textAlign: 'center' },
+      }}
     />
   );
 };

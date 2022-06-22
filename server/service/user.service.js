@@ -6,9 +6,9 @@ const { User } = require('../sequelize/models');
 
 class UserService {
   static async registration(username, password) {
-    const candidate = await User.findOne({ where: { name: username } });
+    const isFree = await this.check(username);
 
-    if (candidate) {
+    if (!isFree) {
       throw console.log('User already exists!!!!');
     }
 
@@ -42,6 +42,14 @@ class UserService {
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
 
     return { ...tokens, user: userDto };
+  }
+
+  static async check(username) {
+    const user = await User.findOne({ where: { name: username } });
+    if (user) {
+      return false;
+    }
+    return true;
   }
 
   static async logout(refreshToken) {

@@ -10,6 +10,7 @@ export const useAuthStore = create((set: any, get: any) => ({
   user: null,
   isAuth: false,
   tasks: [],
+  isUsernameExists: false,
   isLoaded: true,
   error: null,
 
@@ -22,6 +23,22 @@ export const useAuthStore = create((set: any, get: any) => ({
     } catch (e) {
       const err = e as AxiosError | Error;
       set({ error: err.message });
+    }
+  },
+
+  checkTheUsername: async (username: string): Promise<boolean | undefined> => {
+    set({ isLoaded: false });
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/check_username`, { username });
+      const { isFree } = response.data;
+      set({ isUsernameExists: !isFree });
+      return !isFree;
+    } catch (e) {
+      const err = e as AxiosError | Error;
+      set({ error: err.message });
+      return true;
+    } finally {
+      set({ isLoaded: true });
     }
   },
 
