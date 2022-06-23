@@ -16,6 +16,8 @@ import {
 } from '../../components';
 import { Container } from './SignUpPage.styles';
 import { UsernameForm, PasswordForm } from '../../components/RegistrationForm';
+// CONST
+import { StorageKeys } from '../../const';
 
 interface StepType {
   component: () => JSX.Element,
@@ -54,8 +56,7 @@ interface LocationState {
 
 export const SignUpPage: FC = () => {
   const { state }: LocationState = useLocation() as LocationType;
-  const location = useLocation();
-  const { storedValue, setValue, removeStoredItem } = useSessionStorage('stepper-form-data', []);
+  const { removeStoredItem } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
   const [usernameInputValue, setUsernameInputValue] = useState<string>('');
   const [passwordInputValue, setPasswordInputValue] = useState<string>('');
   const { registration, login } = useAuthStore((store) => store);

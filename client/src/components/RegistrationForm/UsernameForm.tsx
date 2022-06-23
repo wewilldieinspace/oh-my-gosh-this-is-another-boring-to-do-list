@@ -15,6 +15,8 @@ import { RegistrationFormProps } from './RegistrationForm.types';
 // COMPONENTS
 import { Input, Title, Text } from '../common';
 import { Form as FormElement } from './RegistrationForm.styles';
+// CONST
+import { StorageKeys } from '../../const';
 
 interface Values {
   username: string
@@ -24,7 +26,7 @@ export const UsernameForm = () => {
   const {
     checkTheUsername, isUsernameExists, isLoaded, error,
   } = useAuthStore((store) => store);
-  const { storedValue, setValue } = useSessionStorage('stepper-form-data', []);
+  const { storedValue, setValue } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
   const navigate = useNavigate();
   const location = useLocation();
 
