@@ -26,13 +26,13 @@ export const UsernameForm = () => {
   const {
     checkTheUsername, isUsernameExists, isLoaded, error,
   } = useAuthStore((store) => store);
-  const { storedValue, setValue } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
+  const { storageValue, setStorageValue } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
   const navigate = useNavigate();
   const location = useLocation();
 
   const onSubmit = useCallback(
     async (values: Values) => {
-      setValue<Values>(values);
+      setStorageValue<Values>(values);
       const isExists = await checkTheUsername(values.username.trim());
 
       if (isExists) {
@@ -53,7 +53,7 @@ export const UsernameForm = () => {
   return (
     <Form
       onSubmit={onSubmit}
-      initialValues={storedValue}
+      initialValues={storageValue}
       render={({ handleSubmit }) => (
         <FormElement onSubmit={handleSubmit}>
           <Field

@@ -1,6 +1,6 @@
 // REACT
 import React, {
-  ChangeEvent, EventHandler, useCallback, useEffect,
+  ChangeEvent, EventHandler, useCallback, useEffect, useState,
 } from 'react';
 // REACT-ROUTER-DOM
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -28,9 +28,10 @@ export const PasswordForm = () => {
   const {
     checkTheUsername, isUsernameExists, isLoaded, error,
   } = useAuthStore((store) => store);
-  const { storedValue, setValue } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
+  const { storageValue, setStorageValue } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
   const navigate = useNavigate();
   const location = useLocation();
+  const [value, setValue] = useState<string>('');
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e);
@@ -38,7 +39,7 @@ export const PasswordForm = () => {
 
   const onSubmit = useCallback(
     async (values: Values) => {
-      setValue<Values>(values);
+      setStorageValue<Values>(values);
       const isExists = await checkTheUsername(values.username.trim());
 
       if (isExists) {
@@ -59,7 +60,7 @@ export const PasswordForm = () => {
   return (
     <Form
       onSubmit={onSubmit}
-      initialValues={storedValue}
+      initialValues={storageValue}
       render={({ handleSubmit }) => (
         <FormElement onSubmit={handleSubmit}>
           <Field

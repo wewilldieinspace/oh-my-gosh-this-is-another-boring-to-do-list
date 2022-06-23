@@ -15,6 +15,8 @@ import {
   Input, Title,
 } from '../../components';
 import { Container, Form as FormElement } from './SignInPage.styles';
+// CONST
+import { StorageKeys } from '../../const';
 
 interface StepType {
   component: React.ReactNode,
@@ -22,7 +24,7 @@ interface StepType {
 }
 
 export const SignInPage: FC = () => {
-  const { storedValue, setValue, removeStoredItem } = useSessionStorage('stepper-form-data', []);
+  const { storageValue, setStorageValue, removeStorageItem } = useSessionStorage('stepper-form-data', []);
   const [usernameInputValue, setUsernameInputValue] = useState<string>('');
   const [passwordInputValue, setPasswordInputValue] = useState<string>('');
   const { registration, login } = useAuthStore((store) => store);
@@ -49,7 +51,7 @@ export const SignInPage: FC = () => {
       </Title>
       <Form
         onSubmit={loginHandler}
-        initialValues={storedValue}
+        initialValues={storageValue}
         render={({ handleSubmit }) => (
           <FormElement onSubmit={handleSubmit}>
             <Field

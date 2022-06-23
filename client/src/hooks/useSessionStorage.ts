@@ -4,7 +4,7 @@ import { useState } from 'react';
 type valueType = number | string | string[] | number[];
 
 export const useSessionStorage = (keyName: string, defaultValue: valueType) => {
-  const [storedValue, setStoredValue] = useState(() => {
+  const [storageValue, setValue] = useState(() => {
     try {
       const value = window.sessionStorage.getItem(keyName);
 
@@ -18,16 +18,16 @@ export const useSessionStorage = (keyName: string, defaultValue: valueType) => {
     }
   });
 
-  const setValue = <T>(value: T) => {
+  const setStorageValue = <T>(value: T) => {
     try {
       window.sessionStorage.setItem(keyName, JSON.stringify(value));
     } catch (e) {
       console.log(e);
     }
-    setStoredValue(value);
+    setValue(value);
   };
 
-  const removeStoredItem = () => {
+  const removeStorageItem = () => {
     try {
       window.sessionStorage.removeItem(keyName);
     } catch (e) {
@@ -36,5 +36,5 @@ export const useSessionStorage = (keyName: string, defaultValue: valueType) => {
     setValue('');
   };
 
-  return { storedValue, setValue, removeStoredItem };
+  return { storageValue, setStorageValue, removeStorageItem };
 };

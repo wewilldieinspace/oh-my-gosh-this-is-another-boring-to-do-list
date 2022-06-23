@@ -34,7 +34,7 @@ interface LocationState {
 
 export const SignUpPage: FC = () => {
   const { state }: LocationState = useLocation() as LocationType;
-  const { removeStoredItem } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
+  const { removeStorageItem } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
   const [usernameInputValue, setUsernameInputValue] = useState<string>('');
   const [passwordInputValue, setPasswordInputValue] = useState<string>('');
   const { registration, login } = useAuthStore((store) => store);
@@ -51,7 +51,7 @@ export const SignUpPage: FC = () => {
   const StepComponent = STEPS[step].component;
 
   useEffect(() => () => {
-    removeStoredItem();
+    removeStorageItem();
   }, []);
 
   return (
