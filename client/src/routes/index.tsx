@@ -6,23 +6,25 @@ import {
 } from '../pages';
 // TYPES
 import { DeviceInfoType } from '../types';
+// CONST
+import { Path } from '../const';
 
 export const useRoutes = (isAuth: boolean, deviceType: DeviceInfoType) => {
   if (isAuth) {
     return (
       <Routes>
-        <Route path="/" element={<TaskListPage />} />
-        <Route path="/task/:id" element={<TaskItemPage />} />
-        <Route path="/login" element={<Navigate to="/" />} />
+        <Route path={`${Path.MAIN}`} element={<TaskListPage />} />
+        <Route path={`${Path.TASK}/:id`} element={<TaskItemPage />} />
+        <Route path={`${Path.LOGIN}`} element={<Navigate to={`${Path.MAIN}`} />} />
       </Routes>
     );
   }
 
   return (
     <Routes>
-      <Route path="/login" element={<SignInPage />} />
-      <Route path="/registration" element={<SignUpPage />} />
-      <Route path="/*" element={<Navigate to="/login" />} />
+      <Route path={`${Path.LOGIN}`} element={<SignInPage />} />
+      <Route path={`${Path.REGISTRATION}`} element={<SignUpPage />} />
+      <Route path="/*" element={<Navigate to={`${Path.LOGIN}`} />} />
     </Routes>
   );
 };

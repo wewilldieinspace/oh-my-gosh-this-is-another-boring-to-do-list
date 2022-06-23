@@ -1,5 +1,5 @@
 // REACT
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 // MUI
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -20,14 +20,17 @@ export const Input = ({
   helperText = '',
   color = 'primary',
   disabled = false,
+  inputOnChange,
 }: any) => {
   const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
   const { type } = input;
+
   if (type === 'password') {
     return (
       <TextField
         {...input}
         type={isPasswordVisible ? 'text' : 'password'}
+        value={input.value}
         className={className}
         label={label}
         variant={variant}
@@ -35,6 +38,10 @@ export const Input = ({
         error={error}
         helperText={error || helperText}
         color={color}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          input.onChange(e);
+          inputOnChange(e);
+        }}
         disabled={disabled}
         FormHelperTextProps={{
           sx: { margin: 0, textAlign: 'center' },
