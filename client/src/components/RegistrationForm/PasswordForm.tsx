@@ -33,6 +33,7 @@ export const PasswordForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [value, setValue] = useState<string>('');
+  const [validationError, setValidationError] = useState<boolean>(false);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value.trim());
@@ -42,10 +43,10 @@ export const PasswordForm = () => {
     async (values: Values) => {
       setStorageValue<Values>(values);
       if (values.password.length < 3) {
-        return;
+        return setValidationError(true);
       }
       registration(values.username, values.password);
-      navigate(
+      return navigate(
         location.pathname,
         {
           state: {
@@ -73,9 +74,9 @@ export const PasswordForm = () => {
             inputOnChange={onChange}
             inputValue={value}
             inputProps={{ minLength: 1 }}
-            error={isUsernameExists}
+            error={validationError}
             fullWidth
-            helperText={isUsernameExists ? 'Well, f*ck. User is already exists' : ''}
+            helperText={validationError && 'The password must be longer than three characters, dear'}
             disabled={!isLoaded || !!error}
           />
 

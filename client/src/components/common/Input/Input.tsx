@@ -36,7 +36,7 @@ export const Input = ({
         variant={variant}
         required={required}
         error={error}
-        helperText={error || helperText}
+        helperText={helperText}
         color={color}
         value={inputValue}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
