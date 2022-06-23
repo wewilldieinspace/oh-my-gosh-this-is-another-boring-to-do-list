@@ -5,7 +5,7 @@ export const PTag = styled.p<{
   color: string;
 }>`
   font-size: ${({ size }) => size};
-  color: #282828;
+  color: ${({ color }) => color};
   font-weight: 400;
   line-height: 22px;
   word-wrap: break-word;
@@ -16,7 +16,7 @@ export const SpanTag = styled.span<{
   color: string;
 }>`
   font-size: ${({ size }) => size};
-  color: #282828;
+  color: ${({ color }) => color};
   font-weight: 400;
   line-height: 22px;
   word-wrap: break-word;

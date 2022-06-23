@@ -1,5 +1,5 @@
 // REACT
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 // REACT-ROUTER-DOM
 import { useNavigate, useLocation } from 'react-router-dom';
 // MUI
@@ -16,7 +16,7 @@ import type { RegistrationFormProps } from './RegistrationForm.types';
 import { Input } from '../common';
 import { Form as FormElement } from './RegistrationForm.styles';
 // CONST
-import { StorageKeys } from '../../const';
+import { StorageKeys, REGISTER_STEPS as STEPS } from '../../const';
 
 interface Values {
   username: string
@@ -66,7 +66,7 @@ export const UsernameForm = () => {
             inputProps={{ minLength: 1 }}
             error={isUsernameExists}
             fullWidth
-            helperText={isUsernameExists ? 'Well, f*ck. User is already exists' : ''}
+            helperText={isUsernameExists && STEPS[0].failMessage}
             disabled={!isLoaded || !!error}
           />
 

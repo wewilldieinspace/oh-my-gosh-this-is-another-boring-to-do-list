@@ -18,7 +18,7 @@ import type { RegistrationFormProps } from './RegistrationForm.types';
 import { Input } from '../common';
 import { Form as FormElement } from './RegistrationForm.styles';
 // CONST
-import { StorageKeys } from '../../const';
+import { StorageKeys, REGISTER_STEPS as STEPS } from '../../const';
 
 interface Values {
   username: string,
@@ -76,7 +76,7 @@ export const PasswordForm = () => {
             inputProps={{ minLength: 1 }}
             error={validationError}
             fullWidth
-            helperText={validationError && 'The password must be longer than three characters, dear'}
+            helperText={validationError && STEPS[1].failMessage}
             disabled={!isLoaded || !!error}
           />
 
