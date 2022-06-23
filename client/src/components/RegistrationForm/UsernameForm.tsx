@@ -1,5 +1,5 @@
 // REACT
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 // REACT-ROUTER-DOM
 import { useNavigate, useLocation } from 'react-router-dom';
 // MUI
@@ -11,9 +11,9 @@ import { useAuthStore } from '../../data';
 // HOOKS
 import { useSessionStorage } from '../../hooks/useSessionStorage';
 // TYPES
-import { RegistrationFormProps } from './RegistrationForm.types';
+import type { RegistrationFormProps } from './RegistrationForm.types';
 // COMPONENTS
-import { Input, Title, Text } from '../common';
+import { Input } from '../common';
 import { Form as FormElement } from './RegistrationForm.styles';
 // CONST
 import { StorageKeys } from '../../const';

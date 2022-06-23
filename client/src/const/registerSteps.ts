@@ -15,7 +15,7 @@ export const REGISTER_STEPS: StepType[] = [
     stepTitle: 'password',
   },
   {
-    component: PasswordForm,
+    component: UsernameForm,
     mainTitle: 'Result',
     stepTitle: 'result',
   },

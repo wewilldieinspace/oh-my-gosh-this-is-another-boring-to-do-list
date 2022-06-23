@@ -60,7 +60,7 @@ export const SignUpPage: FC = () => {
         tag="h2"
         size="m"
       >
-        Show a little imagination and come up with a username
+        {STEPS[step].mainTitle}
       </Title>
       <Stepper activeStep={step}>
         {

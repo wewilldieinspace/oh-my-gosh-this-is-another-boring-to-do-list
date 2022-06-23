@@ -1,6 +1,6 @@
 // REACT
 import React, {
-  ChangeEvent, EventHandler, useCallback, useEffect, useState,
+  ChangeEvent, useCallback, useState,
 } from 'react';
 // REACT-ROUTER-DOM
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -13,20 +13,21 @@ import { useAuthStore } from '../../data';
 // HOOKS
 import { useSessionStorage } from '../../hooks/useSessionStorage';
 // TYPES
-import { RegistrationFormProps } from './RegistrationForm.types';
+import type { RegistrationFormProps } from './RegistrationForm.types';
 // COMPONENTS
-import { Input, Title, Text } from '../common';
+import { Input } from '../common';
 import { Form as FormElement } from './RegistrationForm.styles';
 // CONST
 import { StorageKeys } from '../../const';
 
 interface Values {
-  username: string
+  username: string,
+  password: string,
 }
 
 export const PasswordForm = () => {
   const {
-    checkTheUsername, isUsernameExists, isLoaded, error,
+    registration, isUsernameExists, isLoaded, error,
   } = useAuthStore((store) => store);
   const { storageValue, setStorageValue } = useSessionStorage(StorageKeys.SIGN_UP_FORM_DATA, []);
   const navigate = useNavigate();
@@ -34,22 +35,21 @@ export const PasswordForm = () => {
   const [value, setValue] = useState<string>('');
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
+    setValue(e.target.value.trim());
   };
 
   const onSubmit = useCallback(
     async (values: Values) => {
       setStorageValue<Values>(values);
-      const isExists = await checkTheUsername(values.username.trim());
-
-      if (isExists) {
+      if (values.password.length < 3) {
         return;
       }
+      registration(values.username, values.password);
       navigate(
         location.pathname,
         {
           state: {
-            activeStep: 1,
+            activeStep: 2,
           },
         },
       );
@@ -71,6 +71,7 @@ export const PasswordForm = () => {
             variant="outlined"
             required
             inputOnChange={onChange}
+            inputValue={value}
             inputProps={{ minLength: 1 }}
             error={isUsernameExists}
             fullWidth

@@ -20,6 +20,7 @@ export const Input = ({
   helperText = '',
   color = 'primary',
   disabled = false,
+  inputValue = '',
   inputOnChange,
 }: any) => {
   const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
@@ -30,7 +31,6 @@ export const Input = ({
       <TextField
         {...input}
         type={isPasswordVisible ? 'text' : 'password'}
-        value={input.value}
         className={className}
         label={label}
         variant={variant}
@@ -38,6 +38,7 @@ export const Input = ({
         error={error}
         helperText={error || helperText}
         color={color}
+        value={inputValue}
         onChange={(e: ChangeEvent<HTMLInputElement>) => {
           input.onChange(e);
           inputOnChange(e);
