@@ -17,31 +17,9 @@ import {
 import { Container } from './SignUpPage.styles';
 import { UsernameForm, PasswordForm } from '../../components/RegistrationForm';
 // CONST
-import { StorageKeys } from '../../const';
-
-interface StepType {
-  component: () => JSX.Element,
-  mainTitle: string,
-  stepTitle: string
-}
-
-const STEPS: StepType[] = [
-  {
-    component: UsernameForm,
-    mainTitle: 'Show a little imagination and come up with a username',
-    stepTitle: 'username',
-  },
-  {
-    component: PasswordForm,
-    mainTitle: 'And now try to come up with a password',
-    stepTitle: 'password',
-  },
-  {
-    component: PasswordForm,
-    mainTitle: 'Result',
-    stepTitle: 'result',
-  },
-];
+import { StorageKeys, REGISTER_STEPS as STEPS } from '../../const';
+// TYPES
+import type { RegisterStepsType as StepType } from '../../types';
 
 interface LocationType extends Location {
   state: {
